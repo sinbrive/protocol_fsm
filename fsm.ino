@@ -1,3 +1,10 @@
+/* sinbrive July 2018
+ * Simple FSM for arduino
+ * forked from minsuklee/protocol_fsm 
+ * Simulate 4 states expecting 4 events
+ * Serial for tests (the exmaple was to make led flashing based on number of clik on a button)
+ */
+
 #define TEST_FSM
 
 #define NUM_STATE   4
@@ -10,11 +17,11 @@ enum proto_state
   };     
 
 // Events
-enum proto_event { onePUSH, twoPUSH, threePUSH, TIMEOUT };
+enum proto_event { ONE_CLICK, TWO_CLICK, THREE_CLICK, TIMEOUT };
 
-char *st_name[] =  { "zeroBlink", "oneBlink", "twoBlink", "threeBlink" };
+char *st_name[] =  { "zero Blink", "one Blink", "two Blink", "three Blink" };
 
-char *ev_name[] =  { "onePush", "twoPush", "threePush", "TIMEOUT"};
+char *ev_name[] =  { "one Push", "two Push ", "three Push", "TIMEOUT"};
 
 struct state_action {           // Protocol FSM Structure
     void (* action)(void *p);
@@ -68,18 +75,18 @@ static void entryThreeBlink(void *p)
 
 struct state_action p_FSM[NUM_STATE][NUM_EVENT] = {
   //  for each event:
-  //  onePUSH,                    twoPUSH,                 threePUSH,                TIMEOUT
+  //  ONE_CLICK,                    TWO_CLICK,                 THREE_CLICK,                TIMEOUT
 
-  // - zero push
+  // - state 0 
   {{ entryOneBlink, ONE_BLINK }, { entryTwoBlink, TWO_BLINK },      { entryThreeBlink, THREE_BLINK },      { NULL, ZERO_BLINK }},
 
-  // - one push
+  // - one click
   {{ NULL, ONE_BLINK }, { entryTwoBlink, TWO_BLINK },      { entryThreeBlink, THREE_BLINK }, { entryZeroBlink, ZERO_BLINK }},
 
-  // - two push
+  // - two clicks
   {{ entryOneBlink, ONE_BLINK }, { NULL, TWO_BLINK },      { entryThreeBlink, THREE_BLINK },      { entryZeroBlink, ZERO_BLINK }},
   
-    // - three push
+    // - three clicks
   {{ entryOneBlink, ONE_BLINK }, { entryTwoBlink, TWO_BLINK },      { NULL, THREE_BLINK },      { entryZeroBlink, ZERO_BLINK }},
 };
 
@@ -95,7 +102,7 @@ struct p_event *get_event(void)
       if (Serial.available() > 0) 
       {
         int number = Serial.parseInt(); 
-        event.event=proto_event((number-1)%2);
+        event.event=proto_event((number-1)%3);
       }
       else 
       {
