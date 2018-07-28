@@ -71,8 +71,6 @@ static void entryThreeBlink(void *p)
      Serial.println(st_name[THREE_BLINK]);
 }
 
-
-
 struct state_action p_FSM[NUM_STATE][NUM_EVENT] = {
   //  for each event:
   //  ONE_CLICK,                    TWO_CLICK,                 THREE_CLICK,                TIMEOUT
@@ -131,11 +129,6 @@ void loop()
      /* Step 0: Get Input Event */
     if((eventp = get_event()) != NULL) {
       
-//        #ifdef TEST_FSM  
-//          char const buffer = printf("Current Stat = %s\n", st_name[c_state]);
-//          //Serial.println(st_name[c_state]);
-//        #endif    
-        
         /* Step 1: Do Action */
         if (p_FSM[c_state][eventp->event].action) {
             p_FSM[c_state][eventp->event].action(eventp);
