@@ -1,4 +1,4 @@
-##FSM for Arduino
+## FSM for Arduino
 
 - Events
 - Sate
