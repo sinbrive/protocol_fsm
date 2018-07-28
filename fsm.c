@@ -39,9 +39,7 @@ static void entryZeroBlink(void *p)
 {
     stateTimeout = 5000;
     referenceTime=millis();
-    char const buffer = sprintf("Current Stat = %s\n", st_name[c_state]);
-    Serial.println(buffer);
-    //Serial.println(st_name[ZERO_BLINK]);
+    Serial.println(st_name[ZERO_BLINK]);
 }
 
 
